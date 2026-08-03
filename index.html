@@ -109,7 +109,139 @@
 </style>
 </head>
 <body>
+<style>
+  body.report-locked {
+    overflow: hidden;
+  }
 
+  body.report-locked > :not(#report-login-screen):not(style):not(script) {
+    visibility: hidden;
+  }
+
+  #report-login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #eef4ff, #f8fafc);
+    font-family: Arial, "Noto Sans TC", sans-serif;
+  }
+
+  .report-login-card {
+    width: min(400px, 100%);
+    padding: 36px 30px;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.16);
+    text-align: center;
+  }
+
+  .report-login-icon {
+    margin-bottom: 12px;
+    font-size: 42px;
+  }
+
+  .report-login-card h1 {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 24px;
+  }
+
+  .report-login-card p {
+    margin: 0 0 22px;
+    color: #64748b;
+  }
+
+  #report-password {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  #report-password:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  }
+
+  .report-login-button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px;
+    border: 0;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .report-login-button:hover {
+    background: #1d4ed8;
+  }
+
+  #report-login-error {
+    min-height: 22px;
+    margin: 12px 0 0;
+    color: #dc2626;
+    font-size: 14px;
+  }
+</style>
+
+<div id="report-login-screen">
+  <form class="report-login-card" id="report-login-form">
+    <div class="report-login-icon">🔒</div>
+    <h1>台灣蛋捲市場分析報告</h1>
+    <p>請輸入密碼以查看報告</p>
+
+    <input
+      id="report-password"
+      type="password"
+      inputmode="numeric"
+      autocomplete="current-password"
+      placeholder="請輸入密碼"
+      aria-label="報告密碼"
+      required
+    >
+
+    <button class="report-login-button" type="submit">登入</button>
+    <div id="report-login-error" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+  (function () {
+    const REPORT_PASSWORD = "12325165";
+
+    const screen = document.getElementById("report-login-screen");
+    const form = document.getElementById("report-login-form");
+    const input = document.getElementById("report-password");
+    const error = document.getElementById("report-login-error");
+
+    document.body.classList.add("report-locked");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (input.value === REPORT_PASSWORD) {
+        document.body.classList.remove("report-locked");
+        screen.style.display = "none";
+      } else {
+        error.textContent = "密碼錯誤，請重新輸入";
+        input.value = "";
+        input.focus();
+      }
+    });
+
+    input.focus();
+  })();
+</script>
 <div class="page-header">
   <h1>🥚 台灣蛋捲市場分析報告</h1>
   <div class="subtitle">資料來源：引客數據｜喜年來蛋捲月報（2606_喜年來_蛋捲月報_0731.xlsx，含 2026/06 最新數據）</div>
