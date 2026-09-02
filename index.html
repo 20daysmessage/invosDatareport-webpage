@@ -112,48 +112,31 @@
 <style>
 #pw-overlay{position:fixed;inset:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;z-index:99999;font-family:Arial,sans-serif}
 #pw-box{background:#fff;border-radius:16px;box-shadow:0 8px 40px #0002;padding:48px 40px;text-align:center;width:340px}
-#pw-logo{font-size:40px;margin-bottom:12px}
-#pw-title{font-size:22px;font-weight:700;color:#1a2433;margin-bottom:4px}
+#pw-logo{font-size:40px;margin-bottom:12px}#pw-title{font-size:22px;font-weight:700;color:#1a2433;margin-bottom:4px}
 #pw-sub{font-size:13px;color:#64748b;margin-bottom:28px}
 #pw-input{width:100%;box-sizing:border-box;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 14px;font-size:15px;outline:none;transition:border .2s;margin-bottom:12px}
 #pw-input:focus{border-color:#c8102e}
-#pw-btn{width:100%;background:#c8102e;color:#fff;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s}
-#pw-btn:hover{opacity:.88}
+#pw-btn{width:100%;background:#c8102e;color:#fff;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
 #pw-err{color:#c8102e;font-size:13px;margin-top:10px;min-height:18px}
 </style>
-<div id="pw-overlay">
-  <div id="pw-box">
-    <div id="pw-logo">🥚</div>
-    <div id="pw-title">喜年來蛋捲市場報告</div>
-    <div id="pw-sub">請輸入密碼以查看內容</div>
-    <input id="pw-input" type="password" placeholder="密碼" onkeydown="if(event.key==='Enter')checkPw()">
-    <button id="pw-btn" onclick="checkPw()">進入報告</button>
-    <div id="pw-err"></div>
-  </div>
-</div>
+<div id="pw-overlay"><div id="pw-box">
+  <div id="pw-logo">🥚</div>
+  <div id="pw-title">喜年來蛋捲市場報告</div>
+  <div id="pw-sub">請輸入密碼以查看內容</div>
+  <input id="pw-input" type="password" placeholder="密碼" onkeydown="if(event.key==='Enter')checkPw()">
+  <button id="pw-btn" onclick="checkPw()">進入報告</button>
+  <div id="pw-err"></div>
+</div></div>
 <script>
-(async function(){
-  // Check if already authenticated this session
-  if(sessionStorage.getItem('egg_auth')==='1'){
-    document.getElementById('pw-overlay').style.display='none';
-  }
-})();
+(async function(){if(sessionStorage.getItem('egg_auth')==='1')document.getElementById('pw-overlay').style.display='none';})();
 async function checkPw(){
-  const val=document.getElementById('pw-input').value;
-  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
-  const hex=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
-  // SHA-256 of "12325165"
-  if(hex==='2719d8837f2e61f406067dec765a928e0a1002d2ae79fe77832a454d7b968f5a'){
-    sessionStorage.setItem('egg_auth','1');
-    document.getElementById('pw-overlay').style.display='none';
-  } else {
-    document.getElementById('pw-err').textContent='密碼錯誤，請再試一次';
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-input').focus();
-  }
+  const v=document.getElementById('pw-input').value;
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+  const hex=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(hex==='2719d8837f2e61f406067dec765a928e0a1002d2ae79fe77832a454d7b968f5a'){sessionStorage.setItem('egg_auth','1');document.getElementById('pw-overlay').style.display='none';}
+  else{document.getElementById('pw-err').textContent='密碼錯誤';document.getElementById('pw-input').value='';}
 }
 </script>
-
 
 <div class="page-header">
   <h1>🥚 台灣蛋捲市場分析報告</h1>
@@ -387,11 +370,11 @@ async function checkPw(){
 // ============================================================
 const LABELS=["25/1","25/2","25/3","25/4","25/5","25/6","25/7","25/8","25/9","25/10","25/11","25/12","26/1","26/2","26/3","26/4","26/5","26/6","26/7"];
 const MKT={
-  revenue:  [100,28.02,22.22,19.19,19.45,16.39,16.7,20.96,44.89,20.65,20.18,20.91,55.55,80.64,22.64,19.33,17.48,22.82],
-  customers:[100,53.08,53.86,46.71,40.79,38.23,39.16,44.72,51.05,39.57,45.01,42.69,61.0,97.63,48.9,45.8,41.93,48.41],
-  purchases:[100,54.21,53.53,46.25,39.99,37.51,38.26,43.21,49.66,38.3,44.12,41.79,60.47,95.83,47.79,44.69,41.06,47.56],
-  rpc:      [665,349,273,271,315,283,282,310,581,345,296,324,602,546,306,279,277,314],
-  rpp:      [597,307,246,246,289,259,259,288,536,320,271,297,545,499,281,257,254,286]
+  revenue:  [100,28.02,22.22,19.19,19.45,16.39,16.7,20.96,44.89,20.65,20.18,20.91,55.55,80.64,22.64,19.33,17.48,22.82,21.07],
+  customers:[100,53.08,53.86,46.71,40.79,38.23,39.16,44.72,51.05,39.57,45.01,42.69,61.0,97.63,48.9,45.8,41.93,48.41,47.99],
+  purchases:[100,54.21,53.53,46.25,39.99,37.51,38.26,43.21,49.66,38.3,44.12,41.79,60.47,95.83,47.79,44.69,41.06,47.56,46.87],
+  rpc:      [665,349,273,271,315,283,282,310,581,345,296,324,602,546,306,279,277,314,292],
+  rpp:      [597,307,246,246,289,259,259,288,536,320,271,297,545,499,281,257,254,286,268]
 };
 const BSHARE={
   "喜年來":        [19.22,16.87,26.56,19.14,10.73,9.71,10.68,12.05,11.35,8.32,8.84,10.4,13.04,18.26,24.8,21.49,9.52,7.48],
