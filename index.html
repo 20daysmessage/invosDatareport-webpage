@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>蛋捲市場分析報告 | 喜年來 2026/06</title>
+<title>蛋捲市場分析報告 | 喜年來 2026/07</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -110,144 +110,57 @@
 </head>
 <body>
 <style>
-  body.report-locked {
-    overflow: hidden;
-  }
-
-  body.report-locked > :not(#report-login-screen):not(style):not(script) {
-    visibility: hidden;
-  }
-
-  #report-login-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 2147483647;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    background: linear-gradient(135deg, #eef4ff, #f8fafc);
-    font-family: Arial, "Noto Sans TC", sans-serif;
-  }
-
-  .report-login-card {
-    width: min(400px, 100%);
-    padding: 36px 30px;
-    border-radius: 20px;
-    background: white;
-    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.16);
-    text-align: center;
-  }
-
-  .report-login-icon {
-    margin-bottom: 12px;
-    font-size: 42px;
-  }
-
-  .report-login-card h1 {
-    margin: 0 0 8px;
-    color: #0f172a;
-    font-size: 24px;
-  }
-
-  .report-login-card p {
-    margin: 0 0 22px;
-    color: #64748b;
-  }
-
-  #report-password {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 13px 15px;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 16px;
-    outline: none;
-  }
-
-  #report-password:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
-  }
-
-  .report-login-button {
-    width: 100%;
-    margin-top: 14px;
-    padding: 13px;
-    border: 0;
-    border-radius: 10px;
-    background: #2563eb;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .report-login-button:hover {
-    background: #1d4ed8;
-  }
-
-  #report-login-error {
-    min-height: 22px;
-    margin: 12px 0 0;
-    color: #dc2626;
-    font-size: 14px;
-  }
+#pw-overlay{position:fixed;inset:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;z-index:99999;font-family:Arial,sans-serif}
+#pw-box{background:#fff;border-radius:16px;box-shadow:0 8px 40px #0002;padding:48px 40px;text-align:center;width:340px}
+#pw-logo{font-size:40px;margin-bottom:12px}
+#pw-title{font-size:22px;font-weight:700;color:#1a2433;margin-bottom:4px}
+#pw-sub{font-size:13px;color:#64748b;margin-bottom:28px}
+#pw-input{width:100%;box-sizing:border-box;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 14px;font-size:15px;outline:none;transition:border .2s;margin-bottom:12px}
+#pw-input:focus{border-color:#c8102e}
+#pw-btn{width:100%;background:#c8102e;color:#fff;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s}
+#pw-btn:hover{opacity:.88}
+#pw-err{color:#c8102e;font-size:13px;margin-top:10px;min-height:18px}
 </style>
-
-<div id="report-login-screen">
-  <form class="report-login-card" id="report-login-form">
-    <div class="report-login-icon">🔒</div>
-    <h1>台灣蛋捲市場分析報告</h1>
-    <p>請輸入密碼以查看報告</p>
-
-    <input
-      id="report-password"
-      type="password"
-      inputmode="numeric"
-      autocomplete="current-password"
-      placeholder="請輸入密碼"
-      aria-label="報告密碼"
-      required
-    >
-
-    <button class="report-login-button" type="submit">登入</button>
-    <div id="report-login-error" aria-live="polite"></div>
-  </form>
+<div id="pw-overlay">
+  <div id="pw-box">
+    <div id="pw-logo">🥚</div>
+    <div id="pw-title">喜年來蛋捲市場報告</div>
+    <div id="pw-sub">請輸入密碼以查看內容</div>
+    <input id="pw-input" type="password" placeholder="密碼" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">進入報告</button>
+    <div id="pw-err"></div>
+  </div>
 </div>
-
 <script>
-  (function () {
-    const REPORT_PASSWORD = "12325165";
-
-    const screen = document.getElementById("report-login-screen");
-    const form = document.getElementById("report-login-form");
-    const input = document.getElementById("report-password");
-    const error = document.getElementById("report-login-error");
-
-    document.body.classList.add("report-locked");
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      if (input.value === REPORT_PASSWORD) {
-        document.body.classList.remove("report-locked");
-        screen.style.display = "none";
-      } else {
-        error.textContent = "密碼錯誤，請重新輸入";
-        input.value = "";
-        input.focus();
-      }
-    });
-
-    input.focus();
-  })();
+(async function(){
+  // Check if already authenticated this session
+  if(sessionStorage.getItem('egg_auth')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  const val=document.getElementById('pw-input').value;
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  const hex=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  // SHA-256 of "12325165"
+  if(hex==='2719d8837f2e61f406067dec765a928e0a1002d2ae79fe77832a454d7b968f5a'){
+    sessionStorage.setItem('egg_auth','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='密碼錯誤，請再試一次';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
 </script>
+
+
 <div class="page-header">
   <h1>🥚 台灣蛋捲市場分析報告</h1>
-  <div class="subtitle">資料來源：引客數據｜喜年來蛋捲月報（2606_喜年來_蛋捲月報_0731.xlsx，含 2026/06 最新數據）</div>
+  <div class="subtitle">資料來源：引客數據｜喜年來蛋捲月報（2607_喜年來_蛋捲月報_0831.xlsx，含 2026/07 最新數據）</div>
   <div class="header-meta">
-    <span>📅 資料期間：2025/01 – 2026/06</span>
-    <span>🔖 最新月份：2026/06</span>
+    <span>📅 資料期間：2025/01 – 2026/07</span>
+    <span>🔖 最新月份：2026/07</span>
     <span>🏢 聚焦品牌：喜年來</span>
     <span>📊 30+ 競爭品牌</span>
   </div>
@@ -256,27 +169,27 @@
 <div class="kpi-row">
   <div class="kpi-card red">
     <div class="kpi-label">市場銷售額指數</div>
-    <div class="kpi-value">22.8</div>
-    <div class="kpi-sub"><span class="up">▲ +30.5% MoM</span>　（基期 2025/1=100）</div>
+    <div class="kpi-value">21.1</div>
+    <div class="kpi-sub"><span class="down">▼ -7.6% MoM</span>　（基期 2025/1=100）</div>
   </div>
   <div class="kpi-card teal">
     <div class="kpi-label">市場購買人數指數</div>
-    <div class="kpi-value">48.4</div>
-    <div class="kpi-sub"><span class="up">▲ +15.4% MoM</span></div>
+    <div class="kpi-value">48.0</div>
+    <div class="kpi-sub"><span class="up">▲ +4.7% MoM</span></div>
   </div>
   <div class="kpi-card amber">
     <div class="kpi-label">人均購買金額</div>
-    <div class="kpi-value">$314</div>
-    <div class="kpi-sub"><span class="down">▼ -8.8% MoM</span></div>
+    <div class="kpi-value">$292</div>
+    <div class="kpi-sub"><span class="down">▼ -7.0% MoM</span></div>
   </div>
   <div class="kpi-card green">
     <div class="kpi-label">喜年來銷售市佔</div>
-    <div class="kpi-value">7.48%</div>
-    <div class="kpi-sub"><span class="down">▼ -2.0pp vs 上月</span>　市場第 #3</div>
+    <div class="kpi-value">9.22%</div>
+    <div class="kpi-sub"><span class="up">▲ +1.74pp MoM</span>　市場第 #3</div>
   </div>
   <div class="kpi-card purple">
     <div class="kpi-label">喜年來消費者滲透率</div>
-    <div class="kpi-value">18.02%</div>
+    <div class="kpi-value">20.29%</div>
     <div class="kpi-sub">品類市場最高</div>
   </div>
 </div>
@@ -334,9 +247,9 @@
   </div>
   <div class="grid-2">
     <div class="panel">
-      <div class="panel-title">2026/06 銷售市佔排行 Top 10</div>
+      <div class="panel-title">2026/07 銷售市佔排行 Top 10</div>
       <div id="shareList" class="share-list"></div>
-      <p class="panel-note">數字後變化量：vs 上月（2026/05）</p>
+      <p class="panel-note">數字後變化量：vs 上月（2026/06）</p>
     </div>
     <div class="panel">
       <div class="panel-title">品牌市佔趨勢對比（可選）</div>
@@ -369,13 +282,13 @@
 <!-- ===== 通路分析 ===== -->
 <div id="tab-channel" class="tab-panel">
   <div class="insight-row">
-    <div class="insight-chip warn"><strong>好市多通路大洗牌</strong>2026/06 好市多冠軍由興麥蛋捲（10.82%）取代，喜年來好市多SKU跌至1.65%，通路主導地位失守</div>
+    <div class="insight-chip warn"><strong>好市多被興麥獨霸</strong>2026/07 興麥肉鬆蛋捲 21.15%，單品稱霸整個市場；喜年來好市多 1.89%，全聯 3.88% 成最重要通路</div>
     <div class="insight-chip info"><strong>原生通路品牌優勢</strong>福義軒、hiwalk、六月初一皆有自有通路，直接掌握消費者接觸點</div>
-    <div class="insight-chip ok"><strong>星巴克禮盒季爆發</strong>星巴克通路三款禮盒合計市佔5.15%，年中禮盒採購季推動高端通路成長顯著</div>
+    <div class="insight-chip ok"><strong>喜年來全聯最強通路</strong>喜年來全聯市佔 3.88%，高於好市多（1.89%）和7-11（0.53%），全聯成核心戰場</div>
   </div>
   <div class="grid-2">
     <div class="panel">
-      <div class="panel-title">主要通路-品牌市佔組合（2026/06，%）</div>
+      <div class="panel-title">主要通路-品牌市佔組合（2026/07，%）</div>
       <div class="chart-wrap h300"><canvas id="channelBrandChart"></canvas></div>
     </div>
     <div class="panel">
@@ -417,12 +330,12 @@
 <!-- ===== 熱銷商品榜 ===== -->
 <div id="tab-ranks" class="tab-panel">
   <div class="insight-row">
-    <div class="insight-chip warn"><strong>興麥蛋捲強勢奪冠</strong>好市多「興麥肉鬆蛋捲」2026/06 市佔 10.82%，連兩月居 #1；喜年來滑落至 #6</div>
-    <div class="insight-chip note"><strong>好市多通路主導</strong>Top 2（興麥+手信坊）皆在好市多，好市多集中度持續走高，現占前 30 榜近四成</div>
-    <div class="insight-chip ok"><strong>星巴克禮盒強勁</strong>星巴克兩款禮盒合計市佔超過 4%，星巴克通路重返前五；年中禮盒季效應顯著</div>
+    <div class="insight-chip warn"><strong>興麥好市多促銷爆發</strong>好市多「興麥肉鬆蛋捲」2026/07 市佔 21.15%（較上月 +10.33pp），破歷史紀錄，遠超第二名</div>
+    <div class="insight-chip note"><strong>喜年來好市多回榜</strong>「喜年來原味蛋捲」以 1.86% 居 #2，比上月（1.65%）小幅回升，全聯三款合計貢獻 2.85%</div>
+    <div class="insight-chip ok"><strong>六月初一全家通路拓展</strong>全家兩款六月初一蛋捲（原味＋巧克力）合計 2.47%，六月初一多通路布局成效顯著</div>
   </div>
   <div class="panel">
-    <div class="panel-title">熱銷商品 Top 30　<select class="ctrl-select" id="rankMonSel" onchange="setRankMonth(this.value)" style="font-size:12px;padding:2px 6px;"><option value="26/4">2026/04</option><option value="26/5">2026/05</option><option value="26/6" selected>2026/06</option></select></div>
+    <div class="panel-title">熱銷商品 Top 30　<select class="ctrl-select" id="rankMonSel" onchange="setRankMonth(this.value)" style="font-size:12px;padding:2px 6px;"><option value="26/4">2026/04</option><option value="26/5">2026/05</option><option value="26/6">2026/06</option><option value="26/7" selected>2026/07</option></select></div>
     <div class="controls">
       <span class="ctrl-label">通路：</span>
       <select class="ctrl-select" id="rankCh" onchange="filterRanks()">
@@ -464,7 +377,7 @@
 </div>
 
 <div class="page-footer">
-  <span>資料來源：引客數據【引客數據】2606_喜年來_蛋捲月報_0731.xlsx（含 2026/06 最新數據）</span>
+  <span>資料來源：引客數據【引客數據】2604_喜年來_蛋捲月報_0529.xlsx</span>
   <span>分析製作：Karen Project ｜ 2026 年 6 月</span>
 </div>
 
@@ -472,7 +385,7 @@
 // ============================================================
 // DATA
 // ============================================================
-const LABELS=["25/1","25/2","25/3","25/4","25/5","25/6","25/7","25/8","25/9","25/10","25/11","25/12","26/1","26/2","26/3","26/4","26/5","26/6"];
+const LABELS=["25/1","25/2","25/3","25/4","25/5","25/6","25/7","25/8","25/9","25/10","25/11","25/12","26/1","26/2","26/3","26/4","26/5","26/6","26/7"];
 const MKT={
   revenue:  [100,28.02,22.22,19.19,19.45,16.39,16.7,20.96,44.89,20.65,20.18,20.91,55.55,80.64,22.64,19.33,17.48,22.82],
   customers:[100,53.08,53.86,46.71,40.79,38.23,39.16,44.72,51.05,39.57,45.01,42.69,61.0,97.63,48.9,45.8,41.93,48.41],
@@ -501,16 +414,16 @@ const BPEN={
   "青鳥旅行":      [6.4,4.71,6.7,7.17,6.45,6.94,6.89,5.29,6.63,6.45,4.42,4.74,5.2,4.64,3.85,4.59,4.83,5.27]
 };
 const TOP_SHARE=[
-  {b:"興麥蛋捲",v:11.57,p:7.26},{b:"六月初一",v:10.76,p:9.82},{b:"福義軒",v:7.68,p:12.68},
-  {b:"喜年來",v:7.48,p:9.52},{b:"青鳥旅行",v:7.18,p:6.03},{b:"hiwalk 海邊走走",v:6.21,p:7.37},
-  {b:"實心蛋捲",v:5.2,p:4.02},{b:"Starbucks 星巴克",v:4.44,p:3.65},{b:"義美",v:3.05,p:4.1},{b:"新竹福源",v:3.0,p:2.91}
+  {b:"興麥蛋捲",v:21.89,p:11.57},{b:"六月初一",v:11.14,p:10.76},{b:"喜年來",v:9.22,p:7.48},
+  {b:"福義軒",v:7.53,p:7.68},{b:"hiwalk 海邊走走",v:6.35,p:6.21},{b:"青鳥旅行",v:4.36,p:7.18},
+  {b:"義美",v:4.22,p:3.05},{b:"新竹福源",v:2.83,p:3.0},{b:"實心蛋捲",v:2.74,p:5.2},{b:"Starbucks 星巴克",v:2.32,p:4.44}
 ];
 const BCOLORS={"喜年來":"#c8102e","福義軒":"#f97316","六月初一":"#eab308","hiwalk 海邊走走":"#22c55e","興麥蛋捲":"#3b82f6","青鳥旅行":"#8b5cf6","義美":"#ec4899","Starbucks 星巴克":"#14b8a6","新竹福源":"#64748b","實心蛋捲":"#a78bfa"};
 const CH_BRAND=[
-  {ch:"好市多",br:"興麥蛋捲",v:10.82},{ch:"好市多",br:"手信坊",v:6.93},{ch:"星巴克",br:"Starbucks 星巴克",v:5.15},
-  {ch:"福義軒",br:"福義軒",v:3.15},{ch:"青鳥旅行",br:"青鳥旅行",v:2.52},{ch:"全家",br:"六月初一",v:2.39},
-  {ch:"六月初一",br:"六月初一",v:2.38},{ch:"全聯",br:"喜年來",v:1.87},{ch:"好市多",br:"喜年來",v:1.65},
-  {ch:"hiwalk 海邊走走",br:"hiwalk 海邊走走",v:1.22},{ch:"實心蛋捲",br:"實心蛋捲",v:0.64},{ch:"7-11",br:"青鳥旅行",v:0.96}
+  {ch:"好市多",br:"興麥蛋捲",v:21.15},{ch:"全聯",br:"喜年來",v:3.88},{ch:"六月初一",br:"六月初一",v:3.33},
+  {ch:"福義軒",br:"福義軒",v:3.20},{ch:"星巴克",br:"Starbucks 星巴克",v:2.84},{ch:"全家",br:"六月初一",v:2.47},
+  {ch:"好市多",br:"喜年來",v:1.89},{ch:"7-11",br:"青鳥旅行",v:1.10},{ch:"誠品生活",br:"hiwalk 海邊走走",v:1.01},
+  {ch:"好市多",br:"其他",v:0.93},{ch:"7-11",br:"喜年來",v:0.53},{ch:"7-11",br:"新竹福源",v:0.58}
 ];
 const SHIHS_CH={
   "7-11":  [7.76,2.73,0.95,0.66,0.72,0.66,0.69,0.67,0.59,1.23,0.64,2.64,5.55,4.36,2.39,1.24,0.66,0.41],
@@ -591,6 +504,38 @@ const RANKS={
     {rank:29,ch:"博客來",name:"星巴克臻選綜合蛋捲禮盒",br:"Starbucks 星巴克",rev:0.51},
     {rank:30,ch:"六月初一",name:"宇治抹茶蛋捲32入(盒)",br:"六月初一",rev:0.49}
   ],
+  "26/7":[
+    {rank:1,ch:"好市多",name:"興麥肉鬆蛋捲",br:"興麥蛋捲",rev:21.15},
+    {rank:2,ch:"好市多",name:"喜年來原味蛋捲",br:"喜年來",rev:1.86},
+    {rank:3,ch:"星巴克",name:"臻選綜合蛋捲禮盒",br:"Starbucks 星巴克",rev:1.62},
+    {rank:4,ch:"福義軒",name:"芝麻蛋捲",br:"福義軒",rev:1.60},
+    {rank:5,ch:"全家",name:"團宅—經典原味８結蛋捲",br:"六月初一",rev:1.33},
+    {rank:6,ch:"全家",name:"團宅—濃情巧克力８結蛋捲",br:"六月初一",rev:1.14},
+    {rank:7,ch:"福義軒",name:"原味機能蛋捲",br:"福義軒",rev:1.11},
+    {rank:8,ch:"全聯",name:"喜年來小蛋捲",br:"喜年來",rev:1.10},
+    {rank:9,ch:"7-11",name:"青鳥旅行原味肉鬆蛋捲單支",br:"青鳥旅行",rev:1.04},
+    {rank:10,ch:"全聯",name:"喜年來蛋捲經濟",br:"喜年來",rev:1.03},
+    {rank:11,ch:"誠品生活",name:"海邊走走蛋捲",br:"hiwalk 海邊走走",rev:1.01},
+    {rank:12,ch:"好市多",name:"美心原味雞蛋卷",br:"其他",rev:0.93},
+    {rank:13,ch:"六月初一",name:"彌月SNOOPY40入原味",br:"六月初一",rev:0.78},
+    {rank:14,ch:"7-11",name:"UG三窨十五茉蛋捲單支",br:"其他",rev:0.77},
+    {rank:15,ch:"全聯",name:"喜年來芝麻蛋捲",br:"喜年來",rev:0.72},
+    {rank:16,ch:"好市多",name:"手信坊含餡蛋捲",br:"手信坊",rev:0.68},
+    {rank:17,ch:"誠品生活",name:"青鳥旅行灌餡蛋捲",br:"青鳥旅行",rev:0.68},
+    {rank:18,ch:"星巴克",name:"肉鬆蛋捲禮盒",br:"Starbucks 星巴克",rev:0.64},
+    {rank:19,ch:"六月初一",name:"原味蛋捲32入(盒)",br:"六月初一",rev:0.63},
+    {rank:20,ch:"7-11",name:"新竹福源花生醬蛋捲",br:"新竹福源",rev:0.58},
+    {rank:21,ch:"星巴克",name:"精選咖啡蛋捲禮盒",br:"Starbucks 星巴克",rev:0.58},
+    {rank:22,ch:"六月初一",name:"彌月SNOOPY40入巧克力",br:"六月初一",rev:0.54},
+    {rank:23,ch:"7-11",name:"春上布丁牛乳醬心蛋捲",br:"其他",rev:0.53},
+    {rank:24,ch:"六月初一",name:"芝麻蛋捲32入(盒)",br:"六月初一",rev:0.49},
+    {rank:25,ch:"福義軒",name:"巧克力鮮乳蛋捲",br:"福義軒",rev:0.49},
+    {rank:26,ch:"六月初一",name:"黑糖珍奶蛋捲32入(盒)",br:"六月初一",rev:0.47},
+    {rank:27,ch:"漢神百貨",name:"青鳥旅行",br:"青鳥旅行",rev:0.47},
+    {rank:28,ch:"Gelovery",name:"有出息肉鬆蛋捲10支裝",br:"其他",rev:0.45},
+    {rank:29,ch:"Cyberbiz",name:"經典獻禮盒",br:"其他",rev:0.45},
+    {rank:30,ch:"momo購物網",name:"青鳥旅行灌餡蛋捲旅行盒",br:"青鳥旅行",rev:0.43}
+  ],
   "26/6":[
     {rank:1,ch:"好市多",name:"興麥肉鬆蛋捲",br:"興麥蛋捲",rev:10.82},
     {rank:2,ch:"好市多",name:"手信坊含餡蛋捲",br:"手信坊",rev:6.93},
@@ -624,7 +569,7 @@ const RANKS={
     {rank:30,ch:"全聯",name:"人氣蛋捲起司味",br:"喜年來",rev:0.41}
   ]
 };
-const YOY={months:["26/1","26/2","26/3","26/4","26/5","26/6"],rev:[-44,188,2,1,-10,39],cus:[-39,84,-9,-2,2,26],rpc:[-9,56,12,3,-12,11]};
+const YOY={months:["26/1","26/2","26/3","26/4","26/5","26/6","26/7"],rev:[-44,188,2,-1,-11,37,26],cus:[-39,84,-9,-8,-4,19,22],rpc:[-9,56,12,8,-8,15,4]};
 
 // ============================================================
 // HELPERS
@@ -758,7 +703,7 @@ function buildProfile(){
 function updateProfile(){
   const brand=document.getElementById('profBrand').value;
   const p=PROF[brand]||PROF['喜年來'];
-  const li=17; // latest index (26/06)
+  const li=18; // latest index (26/07)
   const f=p.f[li],m=p.m[li];
   document.getElementById('genderDisplay').innerHTML=`<div class="gender-bars"><div class="gender-f" style="width:${f}%">♀ ${f}%</div><div class="gender-m" style="width:${m}%">♂ ${m}%</div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:4px"><span>女性 ${f}%</span><span>男性 ${m}%</span></div>`;
   const ageC=['#fca5a5','#fcd34d','#86efac','#93c5fd','#c4b5fd','#f9a8d4','#6ee7b7','#fda4af','#a5b4fc','#bef264'];
@@ -773,7 +718,7 @@ function updateProfile(){
 // ============================================================
 // RANKS
 // ============================================================
-let CUR_MON='26/6';
+let CUR_MON='26/7';
 function buildRanks(){filterRanks();}
 function setRankMonth(mon){CUR_MON=mon;filterRanks();}
 function filterRanks(){
