@@ -179,7 +179,8 @@ async function checkPw(){
 
 <div class="tabs-wrapper">
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('trend',this)">📈 市場趨勢</button>
+    <button class="tab-btn active" onclick="showTab('summary',this)">📋 分析摘要</button>
+    <button class="tab-btn" onclick="showTab('trend',this)">📈 市場趨勢</button>
     <button class="tab-btn" onclick="showTab('brand',this)">🏅 品牌競爭</button>
     <button class="tab-btn" onclick="showTab('channel',this)">🏪 通路分析</button>
     <button class="tab-btn" onclick="showTab('profile',this)">👥 消費者輪廓</button>
@@ -188,8 +189,111 @@ async function checkPw(){
   </div>
 </div>
 
+<!-- ===== 分析摘要 ===== -->
+<div id="tab-summary" class="tab-panel active">
+  <div style="max-width:900px;margin:0 auto">
+    <h2 style="font-size:17px;font-weight:700;color:var(--ink);margin:0 0 4px">2026年7月 蛋捲市場分析摘要</h2>
+    <p style="font-size:12px;color:var(--muted);margin:0 0 20px">資料期間：2025/01–2026/07 ｜ 品類：蛋捲</p>
+
+    <!-- KPI row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px">
+      <div class="kpi-card"><div class="kpi-label">市場銷售指數</div><div class="kpi-val">21.1</div><div class="kpi-sub">↑26% YoY</div></div>
+      <div class="kpi-card"><div class="kpi-label">購買人數指數</div><div class="kpi-val">48.0</div><div class="kpi-sub">↑22% YoY</div></div>
+      <div class="kpi-card"><div class="kpi-label">人均消費</div><div class="kpi-val">$292</div><div class="kpi-sub">↑4% YoY</div></div>
+      <div class="kpi-card"><div class="kpi-label">喜年來市佔</div><div class="kpi-val">9.22%</div><div class="kpi-sub">全市場第3名</div></div>
+      <div class="kpi-card"><div class="kpi-label">喜年來滲透率</div><div class="kpi-val">20.29%</div><div class="kpi-sub">品類最高之一</div></div>
+    </div>
+
+    <!-- 市場概況 -->
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">📊 市場概況</div>
+      <p style="font-size:13px;line-height:1.8;color:var(--ink);margin:0">
+        2026年7月蛋捲市場整體銷售年增 <strong>+26%</strong>，購買人數年增 <strong>+22%</strong>，人均消費小幅提升至 <strong>$292</strong>（YoY +4%）。
+        市場延續年初以來的復甦態勢，但成長動能主要集中於 <strong>好市多通路的興麥蛋捲</strong>，以單一SKU（興麥肉鬆蛋捲，市佔21.15%）拉動整體數字，
+        結構性集中風險值得關注。整體滲透率維持在約 <strong>20%</strong> 水準，市場仍有成長空間。
+      </p>
+    </div>
+
+    <!-- 競爭格局 -->
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">🏅 競爭格局</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--muted);margin:0 0 8px">品牌市佔 Top 5（2026/07）</p>
+          <table style="width:100%;font-size:12px;border-collapse:collapse">
+            <tr style="background:#f8fafc"><th style="padding:6px 8px;text-align:left;color:var(--muted);font-size:11px">品牌</th><th style="padding:6px 8px;text-align:right;color:var(--muted);font-size:11px">市佔%</th><th style="padding:6px 8px;text-align:right;color:var(--muted);font-size:11px">vs 上月</th></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">🥇 興麥蛋捲</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">21.89%</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);color:#16a34a">↑10.32pp</td></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">🥈 六月初一</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">11.14%</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);color:#16a34a">↑0.38pp</td></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">🥉 喜年來</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">9.22%</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);color:#16a34a">↑1.74pp</td></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">4. 福義軒</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">7.53%</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);color:#dc2626">↓5.15pp</td></tr>
+            <tr><td style="padding:5px 8px">5. hiwalk</td><td style="padding:5px 8px;text-align:right;font-weight:700">6.35%</td><td style="padding:5px 8px;text-align:right;color:#16a34a">↑0.14pp</td></tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--muted);margin:0 0 8px">喜年來通路分佈（2026/07）</p>
+          <table style="width:100%;font-size:12px;border-collapse:collapse">
+            <tr style="background:#f8fafc"><th style="padding:6px 8px;text-align:left;color:var(--muted);font-size:11px">通路</th><th style="padding:6px 8px;text-align:right;color:var(--muted);font-size:11px">市佔%</th></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">全聯</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">3.88%</td></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">好市多</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">1.89%</td></tr>
+            <tr><td style="padding:5px 8px;border-bottom:1px solid var(--line)">7-11</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);font-weight:700">0.53%</td></tr>
+            <tr><td style="padding:5px 8px">全家</td><td style="padding:5px 8px;text-align:right;font-weight:700">0.05%</td></tr>
+          </table>
+          <p style="font-size:11px;color:var(--muted);margin-top:8px">全聯為喜年來最大通路，好市多有提升空間</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 關鍵觀察 -->
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">🔍 關鍵觀察</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+        <div style="background:#fef2f2;border-radius:10px;padding:14px">
+          <div style="font-weight:700;color:#c8102e;margin-bottom:6px">⚠️ 警示</div>
+          <ul style="margin:0;padding-left:16px;line-height:1.8;color:var(--ink)">
+            <li>興麥蛋捲單月市佔飆升至 <strong>21.89%</strong>，以好市多單通路主導，競爭壓力顯著增加</li>
+            <li>福義軒7月市佔回落 5pp，可能為促銷退潮效應</li>
+            <li>喜年來好市多市佔僅 1.89%，在好市多通路布局偏弱</li>
+          </ul>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:14px">
+          <div style="font-weight:700;color:#16a34a;margin-bottom:6px">✅ 正向信號</div>
+          <ul style="margin:0;padding-left:16px;line-height:1.8;color:var(--ink)">
+            <li>喜年來市佔月增 <strong>+1.74pp</strong> 至 9.22%，年增趨勢良好</li>
+            <li>整體市場 YoY +26%，品類需求持續擴大</li>
+            <li>滲透率 <strong>20.29%</strong> 穩健，消費者回購基礎紮實</li>
+            <li>女性消費者佔比 62%，忠實客群特徵明確</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 策略建議 -->
+    <div class="panel">
+      <div class="panel-title">💡 策略建議</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;font-size:12px">
+        <div style="border-left:3px solid #c8102e;padding-left:12px">
+          <div style="font-weight:700;margin-bottom:4px">好市多通路強化</div>
+          <div style="color:var(--muted);line-height:1.6">興麥以好市多為主陣地，喜年來應評估在好市多推出大包裝或組合商品，與之正面競爭。</div>
+        </div>
+        <div style="border-left:3px solid #f97316;padding-left:12px">
+          <div style="font-weight:700;margin-bottom:4px">全聯深化合作</div>
+          <div style="color:var(--muted);line-height:1.6">全聯是喜年來最強通路（3.88%），可透過檔期促銷、陳列強化進一步鞏固領先地位。</div>
+        </div>
+        <div style="border-left:3px solid #eab308;padding-left:12px">
+          <div style="font-weight:700;margin-bottom:4px">便利商店回溫</div>
+          <div style="color:var(--muted);line-height:1.6">7-11市佔僅 0.53%，可評估與超商聯名或限定口味合作，吸引年輕族群，提升滲透率。</div>
+        </div>
+        <div style="border-left:3px solid #22c55e;padding-left:12px">
+          <div style="font-weight:700;margin-bottom:4px">鎖定核心客群</div>
+          <div style="color:var(--muted);line-height:1.6">35–49歲女性為主力消費群，可針對此族群設計會員活動或禮盒包裝，提升客單價。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 市場趨勢 ===== -->
-<div id="tab-trend" class="tab-panel active">
+<div id="tab-trend" class="tab-panel">
   <div class="insight-row">
     <div class="insight-chip warn"><strong>季節性明顯</strong>春節（1-2月）是銷售高峰，4-8月為淡季谷底，中秋前後（9月）次高峰</div>
     <div class="insight-chip info"><strong>人均消費持續下滑</strong>2026/4 人均客單 $279，為近16個月新低，促銷競爭壓縮客單價</div>
@@ -737,4 +841,9 @@ function buildYoy(){
 // ============================================================
 // INIT
 // ============================================================
-window.addEventLi
+window.addEventListener('load',()=>{
+  buildTrend(); buildBrand(); buildChannel(); buildProfile(); buildRanks(); buildYoy();
+});
+</script>
+</body>
+</html>
